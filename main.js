@@ -4,14 +4,36 @@ const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
 
+let likes = document.querySelectorAll('.like-glyph')
+let modal =  document.getElementById('modal');
+
+for (heart of likes) {
+  heart.addEventListener('click', addLike)
+}
 
 
+function addLike(event) {
+  targetHeart = event.target;
+  console.log(targetHeart)
 
+  mimicServerCall()
+  .then(function (response) {
+      targetHeart.classList.add('activated-heart')
+      targetHeart.textContent = FULL_HEART;
+    })
+  .catch(function () {
+     modal.className.remove('hidden')
+      setTimeout(function () {
+        modal.className.add('hidden')
+      }, 3000)
+    });
+}
+ 
 //------------------------------------------------------------------------------
 // Don't change the code below: this function mocks the server response
 //------------------------------------------------------------------------------
 
-function mimicServerCall(url="http://mimicServer.example.com", config={}) {
+function mimicServerCall(url = "http://mimicServer.example.com", config = {}) {
   return new Promise(function(resolve, reject) {
     setTimeout(function() {
       let isRandomFailure = Math.random() < .2
